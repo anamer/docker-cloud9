@@ -23,8 +23,8 @@ RUN mv node* node && \
 ENV NODE_PATH /usr/local/lib/node_modules
 
 #Change last_commit hash as a cache buster
-ENV latest_commit e37ab66b36c1c5a5faa77a8e0f954454415a541c
-RUN git clone --depth 1 https://github.com/c9/core.git
+#ENV latest_commit e37ab66b36c1c5a5faa77a8e0f954454415a541c
+RUN git clone --depth 1 https://github.com/anamer/core
 RUN cd core && \
     ./scripts/install-sdk.sh
 
@@ -43,4 +43,21 @@ ADD default /etc/nginx/sites-enabled/default
 
 #Add runit services
 ADD sv /etc/service 
+
+#install qemu
+RUN apt-get install -y qemu-system-x86
+
+# Add wruser user
+RUN adduser --home /home/wruser --disabled-password --quiet -gecos ""  wruser 
+
+# Creat directory Workspace
+RUN mkdir /home/wruser/workspace
+
+# Create tap device
+#RUN mkdir -p /dev/net
+#RUN mknod /dev/net/tun c 10 200
+#RUN chmod 600 /dev/net/tun
+#RUN cat /dev/net/tun
+
+
 
